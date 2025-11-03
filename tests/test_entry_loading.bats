@@ -36,17 +36,17 @@ teardown() {
 }
 
 # Test Git aliases load when flag is true
-@test "entry.zsh should load git aliases when OSA_SETUP_GIT=true" {
+@test "entry.zsh should load git aliases when OSA_CONFIG_COMPONENTS_GIT=true" {
   local result
   result=$(
-    OSA_SETUP_GIT=true \
+    OSA_CONFIG_COMPONENTS_GIT=true \
     zsh -c "source $OSA_SNIPPETS_REPO_ROOT/entry.zsh 2>/dev/null && alias prune" 2>/dev/null
   )
   [[ "$result" == *"git fetch -p"* ]]
 }
 
 # Test Git aliases don't load when flag is false
-@test "entry.zsh should not load git aliases when OSA_SETUP_GIT is not set" {
+@test "entry.zsh should not load git aliases when OSA_CONFIG_COMPONENTS_GIT is not set" {
   local result
   result=$(
     zsh -c "source $OSA_SNIPPETS_REPO_ROOT/entry.zsh 2>/dev/null && alias prune" 2>&1 || true
@@ -55,20 +55,20 @@ teardown() {
 }
 
 # Test NPM aliases load when flag is true
-@test "entry.zsh should load npm aliases when OSA_SETUP_NODE=true" {
+@test "entry.zsh should load npm aliases when OSA_CONFIG_COMPONENTS_NODE=true" {
   local result
   result=$(
-    OSA_SETUP_NODE=true \
+    OSA_CONFIG_COMPONENTS_NODE=true \
     zsh -c "source $OSA_SNIPPETS_REPO_ROOT/entry.zsh 2>/dev/null && alias nr" 2>/dev/null
   )
   [[ "$result" == *"npm run"* ]]
 }
 
 # Test Yarn aliases load when flag is true
-@test "entry.zsh should load yarn aliases when OSA_SETUP_NODE=true" {
+@test "entry.zsh should load yarn aliases when OSA_CONFIG_COMPONENTS_NODE=true" {
   local result
   result=$(
-    OSA_SETUP_NODE=true \
+    OSA_CONFIG_COMPONENTS_NODE=true \
     zsh -c "source $OSA_SNIPPETS_REPO_ROOT/entry.zsh 2>/dev/null && alias y" 2>/dev/null
   )
   [[ "$result" == *"yarn"* ]]
@@ -87,11 +87,11 @@ teardown() {
 @test "entry.zsh should load multiple aliases with combined flags" {
   local git_result npm_result
   git_result=$(
-    OSA_SETUP_GIT=true OSA_SETUP_NODE=true \
+    OSA_CONFIG_COMPONENTS_GIT=true OSA_CONFIG_COMPONENTS_NODE=true \
     zsh -c "source $OSA_SNIPPETS_REPO_ROOT/entry.zsh 2>/dev/null && alias prune" 2>/dev/null
   )
   npm_result=$(
-    OSA_SETUP_GIT=true OSA_SETUP_NODE=true \
+    OSA_CONFIG_COMPONENTS_GIT=true OSA_CONFIG_COMPONENTS_NODE=true \
     zsh -c "source $OSA_SNIPPETS_REPO_ROOT/entry.zsh 2>/dev/null && alias nr" 2>/dev/null
   )
   [[ "$git_result" == *"git fetch -p"* ]]
@@ -99,10 +99,10 @@ teardown() {
 }
 
 # Test MISE flag loads node aliases
-@test "entry.zsh should load node aliases when OSA_SETUP_MISE=true" {
+@test "entry.zsh should load node aliases when OSA_CONFIG_RUNTIMES_NODE_ENABLED=true" {
   local result
   result=$(
-    OSA_SETUP_MISE=true \
+    OSA_CONFIG_RUNTIMES_NODE_ENABLED=true \
     zsh -c "source $OSA_SNIPPETS_REPO_ROOT/entry.zsh 2>/dev/null && alias nr" 2>/dev/null
   )
   [[ "$result" == *"npm run"* ]]
