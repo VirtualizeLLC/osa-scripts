@@ -6,6 +6,13 @@
 # Instantly move matched globs to staging, delete async in background.
 # Perfect for millions of files (node_modules, build artifacts, etc).
 #
+# SECURITY: This script includes protections against:
+#   - Directory traversal attacks (.. rejection, symlink resolution)
+#   - Critical system path deletion (/, /bin, /usr, /etc, etc)
+#   - Staging folder escape (only deletes within $HOME/.rmAsync)
+#   - Race conditions (atomic operations, path validation)
+#   - Privilege escalation (uid/gid checks, file permissions)
+#
 # Usage:
 #   rmAsync <pattern> [<pattern2> ...]
 #   rmAsync status
@@ -16,26 +23,24 @@
 #   - Each execution gets unique staging folder (UUID + timestamp)
 #   - All matches staged atomically, then deleted as single folder
 #
-# Behavior:
-#   1. Expand all glob patterns to file list
-#   2. Create unique staging folder: $HOME/.rmAsync/<uuid>_<timestamp>
-#   3. Move all matched files into staging folder (instant on same filesystem)
-#   4. Return immediately (original paths now available)
-#   5. Delete staging folder in background
-#   6. Auto-cleanup orphans if no other rm processes active
-#
-# Performance:
-#   - Staging: O(n) where n = file count (fast due to inode moves)
-#   - Main process: returns immediately after staging
-#   - Deletion: happens in background, non-blocking
-#
 # ==============================================================================
 
 set -o pipefail
 
+# Strict umask prevents world-readable staging dirs
+umask 0077
+
 # Configuration
 readonly RM_ASYNC_DIR="${HOME}/.rmAsync"
 readonly RM_ASYNC_PID_FILE="${RM_ASYNC_DIR}/.pids"
+readonly RM_ASYNC_LOCK="${RM_ASYNC_DIR}/.lock"
+
+# Security: Verify we're running as the user who owns HOME
+readonly EXPECTED_UID=$(stat -f%u "$HOME" 2>/dev/null || stat -c%u "$HOME" 2>/dev/null)
+if [[ $(id -u) != "$EXPECTED_UID" ]]; then
+  echo "Error: HOME ownership mismatch. Possible privilege escalation attempt."
+  exit 1
+fi
 
 # Colors for output
 readonly RED='\033[0;31m'
@@ -78,11 +83,31 @@ _generate_unique_id() {
 }
 
 _init_staging_dir() {
+  # Ensure staging dir doesn't exist as symlink (symlink attack prevention)
+  if [[ -L "$RM_ASYNC_DIR" ]]; then
+    _log_error "Staging directory is a symlink (potential attack): $RM_ASYNC_DIR"
+    return 1
+  fi
+  
   mkdir -p "$RM_ASYNC_DIR" || {
     _log_error "Failed to create staging directory: $RM_ASYNC_DIR"
     return 1
   }
-  chmod 700 "$RM_ASYNC_DIR" 2>/dev/null
+  
+  # Verify directory ownership (must be current user)
+  local dir_owner
+  dir_owner=$(stat -f%u "$RM_ASYNC_DIR" 2>/dev/null || stat -c%u "$RM_ASYNC_DIR" 2>/dev/null)
+  
+  if [[ "$dir_owner" != "$(id -u)" ]]; then
+    _log_error "Staging directory owned by different user: $RM_ASYNC_DIR"
+    return 1
+  fi
+  
+  # Set strict permissions (700 = rwx------)
+  chmod 700 "$RM_ASYNC_DIR" 2>/dev/null || {
+    _log_error "Failed to set permissions on staging directory"
+    return 1
+  }
 }
 
 _validate_critical_paths() {
@@ -91,6 +116,13 @@ _validate_critical_paths() {
   # Bail on empty or malformed paths
   if [[ -z "$path" || "$path" == "." || "$path" == ".." ]]; then
     _log_error "Invalid path: '$path'"
+    return 1
+  fi
+  
+  # SECURITY: Reject if path is a symlink (symlink attack prevention)
+  # We want to validate the link itself, not its target
+  if [[ -L "$path" ]]; then
+    _log_error "Path is a symlink (potential attack): $path"
     return 1
   fi
   
@@ -117,6 +149,12 @@ _validate_critical_paths() {
   # Extra safety: reject if path contains .. (directory traversal attempt)
   if [[ "$abs_path" == *".."* ]]; then
     _log_error "Invalid path (contains ..): $path"
+    return 1
+  fi
+  
+  # Safety: reject if path contains null bytes (shell injection attempt)
+  if [[ "$abs_path" == *$'\0'* ]]; then
+    _log_error "Invalid path (contains null bytes): $path"
     return 1
   fi
   
