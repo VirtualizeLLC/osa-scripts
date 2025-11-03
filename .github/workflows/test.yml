@@ -1,0 +1,76 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: OSA Snippets Tests
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Install dependencies
+        run: |
+          brew install bats-core
+          echo "✓ bats version: $(bats --version)"
+          echo "✓ zsh version: $(zsh --version)"
+      
+      - name: Validate shell syntax
+        run: |
+          echo "Checking shell script syntax..."
+          bash -n entry.zsh
+          echo "✓ entry.zsh"
+          
+          for file in aliases/**/*.zsh; do
+            bash -n "$file"
+            echo "✓ $file"
+          done
+          
+          for file in plugins/**/*.zsh; do
+            bash -n "$file"
+            echo "✓ $file"
+          done
+          
+          echo "✓ All scripts are syntactically valid"
+      
+      - name: Run test suite
+        run: |
+          echo "Running OSA Snippets test suite..."
+          cd tests
+          bats *.bats
+        
+      - name: Test entry.zsh loading
+        run: |
+          echo "Testing entry.zsh configuration flag handling..."
+          
+          # Test with git flag
+          output=$(OSA_SETUP_GIT=true zsh -c "source entry.zsh && alias prune" 2>/dev/null)
+          echo "$output" | grep -q "git fetch -p"
+          echo "✓ Git aliases load correctly"
+          
+          # Test with node flag
+          output=$(OSA_SETUP_NODE=true zsh -c "source entry.zsh && alias nr" 2>/dev/null)
+          echo "$output" | grep -q "npm run"
+          echo "✓ NPM aliases load correctly"
+      
+      - name: Verify required files
+        run: |
+          echo "Verifying required files..."
+          [[ -f "entry.zsh" ]] && echo "✓ entry.zsh exists"
+          [[ -f "README.md" ]] && echo "✓ README.md exists"
+          [[ -d "plugins" ]] && echo "✓ plugins directory exists"
+          [[ -d "aliases" ]] && echo "✓ aliases directory exists"
+      
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: tests/*.bats
+          retention-days: 30

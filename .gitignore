@@ -1,0 +1,48 @@
+# Ignore local and override settings for files
+# src/zsh/**/[__override__,__local__]*.sh
+
+# OSA specific ignores
+src/zsh/constructors/__local__*.zsh
+src/zsh/constructors/init.zsh
+src/zsh/constructors/final.zsh
+
+__generated__*.{zsh,sh}
+
+# Ignore external libraries cloned into OSA config
+external-libs
+
+# end of OSA specific ignores
+
+.gitignore_global_overrides
+
+*.log
+
+# dependencies
+node_modules
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
