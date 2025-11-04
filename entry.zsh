@@ -13,12 +13,14 @@
 # This is the root of the osa-scripts repository
 export OSA_SCRIPTS_ROOT="${0:A:h}"
 
+export OSA_SCRIPTS_ZSH_ROOT="$OSA_SCRIPTS_ROOT/zsh"
+
 # ==============================================================================
 # PLATFORM DETECTION
 # ==============================================================================
 
 # Load platform detection utilities
-[[ -f "$OSA_SCRIPTS_ROOT/src/platform/detect-platform.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/platform/detect-platform.zsh"
+[[ -f "$OSA_SCRIPTS_ZSH_ROOT/platform/detect-platform.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/platform/detect-platform.zsh"
 
 # ==============================================================================
 # ALIASES
@@ -26,49 +28,49 @@ export OSA_SCRIPTS_ROOT="${0:A:h}"
 
 # Git Aliases
 if [[ "${OSA_CONFIG_COMPONENTS_GIT}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/aliases/development/git.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/aliases/development/git.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/aliases/development/git.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/aliases/development/git.zsh"
 fi
 
 # Node.js Aliases (load if Node is enabled in components OR if runtimes.node is enabled)
 if [[ "${OSA_CONFIG_COMPONENTS_NODE}" == "true" ]] || [[ "${OSA_CONFIG_RUNTIMES_NODE_ENABLED}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/aliases/development/node.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/aliases/development/node.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/aliases/development/node.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/aliases/development/node.zsh"
 fi
 
 # NPM Aliases
 if [[ "${OSA_CONFIG_COMPONENTS_NODE}" == "true" ]] || [[ "${OSA_CONFIG_RUNTIMES_NODE_ENABLED}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/aliases/development/npm.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/aliases/development/npm.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/aliases/development/npm.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/aliases/development/npm.zsh"
 fi
 
 # Yarn Aliases
 if [[ "${OSA_CONFIG_COMPONENTS_NODE}" == "true" ]] || [[ "${OSA_CONFIG_RUNTIMES_NODE_ENABLED}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/aliases/development/yarn.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/aliases/development/yarn.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/aliases/development/yarn.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/aliases/development/yarn.zsh"
 fi
 
 # OSA Aliases (always load)
-[[ -f "$OSA_SCRIPTS_ROOT/src/aliases/system/osa.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/aliases/system/osa.zsh"
+[[ -f "$OSA_SCRIPTS_ZSH_ROOT/aliases/system/osa.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/aliases/system/osa.zsh"
 
 # ==============================================================================
 # AUTHORIZATION & SECRETS
 # ==============================================================================
 
 # Secrets Management (always load if exists)
-[[ -f "$OSA_SCRIPTS_ROOT/src/authorization/secrets.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/authorization/secrets.zsh"
+[[ -f "$OSA_SCRIPTS_ZSH_ROOT/authorization/secrets.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/authorization/secrets.zsh"
 
 # ==============================================================================
 # PLUGINS - CORE UTILITIES
 # ==============================================================================
 
 # ANSI Colors (always load)
-[[ -f "$OSA_SCRIPTS_ROOT/src/core/ansi-colors.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/core/ansi-colors.zsh"
+[[ -f "$OSA_SCRIPTS_ZSH_ROOT/core/ansi-colors.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/core/ansi-colors.zsh"
 
 # Oh My Zsh Config
 if [[ "${OSA_CONFIG_COMPONENTS_OH_MY_ZSH}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/core/oh-my-zsh-config.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/core/oh-my-zsh-config.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/core/oh-my-zsh-config.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/core/oh-my-zsh-config.zsh"
 fi
 
 # Powerlevel10k
 if [[ "${OSA_CONFIG_COMPONENTS_ZSH_PLUGINS}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/core/p10k.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/core/p10k.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/core/p10k.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/core/p10k.zsh"
 fi
 
 # ==============================================================================
@@ -77,27 +79,27 @@ fi
 
 # Homebrew
 if [[ "${OSA_CONFIG_COMPONENTS_HOMEBREW}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/tools/brew.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/tools/brew.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/tools/brew.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/tools/brew.zsh"
 fi
 
 # Direnv
 if [[ "${OSA_CONFIG_COMPONENTS_DIRENV}" == "true" ]] || [[ "${OSA_CONFIG_SNIPPETS_OSASNIPPETS_DIRENV}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/tools/direnv.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/tools/direnv.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/tools/direnv.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/tools/direnv.zsh"
 fi
 
 # Keychain
 if [[ "${OSA_CONFIG_COMPONENTS_KEYCHAIN}" == "true" ]] || [[ "${OSA_CONFIG_SNIPPETS_OSASNIPPETS_KEYCHAIN}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/tools/keychain.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/tools/keychain.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/tools/keychain.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/tools/keychain.zsh"
 fi
 
 # Ngrok
 if [[ "${OSA_CONFIG_COMPONENTS_NGROK}" == "true" ]] || [[ "${OSA_CONFIG_SNIPPETS_OSASNIPPETS_NGROK}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/tools/ngrok.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/tools/ngrok.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/tools/ngrok.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/tools/ngrok.zsh"
 fi
 
 # VS Code
 if [[ "${OSA_CONFIG_COMPONENTS_VSCODE}" == "true" ]] || [[ "${OSA_CONFIG_SNIPPETS_OSASNIPPETS_VSCODE}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/tools/vscode.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/tools/vscode.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/tools/vscode.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/tools/vscode.zsh"
 fi
 
 # ==============================================================================
@@ -106,13 +108,13 @@ fi
 
 # React Native
 if [[ "${OSA_CONFIG_COMPONENTS_REACT_NATIVE}" == "true" ]] || [[ "${OSA_CONFIG_SNIPPETS_OSASNIPPETS_REACT_NATIVE}" == "true" ]] || [[ "${OSA_CONFIG_COMPONENTS_ANDROID}" == "true" ]] || [[ "${OSA_CONFIG_SNIPPETS_OSASNIPPETS_ANDROID}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/react-native/react-native.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/react-native/react-native.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/react-native/react-native.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/react-native/react-native.zsh"
 fi
 
 # Android Snippets
 if [[ "${OSA_CONFIG_COMPONENTS_ANDROID}" == "true" ]] || [[ "${OSA_CONFIG_SNIPPETS_OSASNIPPETS_ANDROID}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/platform/android/android-adb.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/platform/android/android-adb.zsh"
-  [[ -f "$OSA_SCRIPTS_ROOT/src/platform/android/android-emulator.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/platform/android/android-emulator.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/platform/android/android-adb.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/platform/android/android-adb.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/platform/android/android-emulator.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/platform/android/android-emulator.zsh"
 fi
 
 # ==============================================================================
@@ -121,33 +123,33 @@ fi
 
 # macOS Browsers
 if [[ "${OSA_CONFIG_COMPONENTS_MAC_TOOLS}" == "true" ]] || [[ "${OSA_CONFIG_SNIPPETS_OSASNIPPETS_MAC_TOOLS}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/platform/mac/browsers.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/platform/mac/browsers.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/platform/mac/browsers.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/platform/mac/browsers.zsh"
 fi
 
 # macOS Deletion Commands
 if [[ "${OSA_CONFIG_COMPONENTS_MAC_TOOLS}" == "true" ]] || [[ "${OSA_CONFIG_SNIPPETS_OSASNIPPETS_MAC_TOOLS}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/platform/mac/deletion-commands.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/platform/mac/deletion-commands.zsh"
-  [[ -f "$OSA_SCRIPTS_ROOT/src/platform/mac/rmAsync.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/platform/mac/rmAsync.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/platform/mac/deletion-commands.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/platform/mac/deletion-commands.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/platform/mac/rmAsync.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/platform/mac/rmAsync.zsh"
 fi
 
 # macOS eGPU Management
 if [[ "${OSA_CONFIG_COMPONENTS_EGPU}" == "true" ]] || [[ "${OSA_CONFIG_SNIPPETS_OSASNIPPETS_EGPU}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/platform/mac/egpu.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/platform/mac/egpu.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/platform/mac/egpu.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/platform/mac/egpu.zsh"
 fi
 
 # macOS Keystore Requirements
 if [[ "${OSA_CONFIG_COMPONENTS_ANDROID}" == "true" ]] || [[ "${OSA_CONFIG_SNIPPETS_OSASNIPPETS_ANDROID}" == "true" ]] || [[ "${OSA_CONFIG_COMPONENTS_MAC_TOOLS}" == "true" ]] || [[ "${OSA_CONFIG_SNIPPETS_OSASNIPPETS_MAC_TOOLS}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/platform/mac/keystore-req.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/platform/mac/keystore-req.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/platform/mac/keystore-req.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/platform/mac/keystore-req.zsh"
 fi
 
 # macOS Xcode Commands
 if [[ "${OSA_CONFIG_COMPONENTS_XCODE}" == "true" ]] || [[ "${OSA_CONFIG_SNIPPETS_OSASNIPPETS_XCODE}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/platform/mac/xcode-commands.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/platform/mac/xcode-commands.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/platform/mac/xcode-commands.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/platform/mac/xcode-commands.zsh"
 fi
 
 # macOS CocoaPods Nuke
 if [[ "${OSA_CONFIG_COMPONENTS_COCOAPODS}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/platform/mac/cocoapods/nuke.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/platform/mac/cocoapods/nuke.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/platform/mac/cocoapods/nuke.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/platform/mac/cocoapods/nuke.zsh"
 fi
 
 # ==============================================================================
@@ -156,7 +158,7 @@ fi
 
 # Parallel bzip2 (pbzip2)
 if [[ "${OSA_CONFIG_COMPONENTS_COMPRESSION}" == "true" ]] || [[ "${OSA_CONFIG_SNIPPETS_OSASNIPPETS_COMPRESSION}" == "true" ]]; then
-  [[ -f "$OSA_SCRIPTS_ROOT/src/compression/tar/pbzip2.zsh" ]] && source "$OSA_SCRIPTS_ROOT/src/compression/tar/pbzip2.zsh"
+  [[ -f "$OSA_SCRIPTS_ZSH_ROOT/compression/tar/pbzip2.zsh" ]] && source "$OSA_SCRIPTS_ZSH_ROOT/compression/tar/pbzip2.zsh"
 fi
 
 # ==============================================================================

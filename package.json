@@ -1,31 +1,16 @@
 {
-  "name": "@virtualize/osa-snippets",
-  "version": "0.1.0",
+  "name": "osa-snippets",
+  "private": true,
+  "packageManager": "yarn@4.10.3",
   "type": "module",
-  "description": "Virtualize OSA snippets and safety tools for coding with AI and helpers for most developer tools.",
-  "license": "Apache-2.0",
-  "repository": "https://github.com/VirtualizeLLC/osa-scripts",
-  "bin": {
-    "audit-auto-approve": "./src/tools/audit/audit-auto-approve.ts"
-  },
-  "files": [
-    "src/tools/audit/audit-auto-approve.ts",
-    "README.md",
-    "LICENSE"
+  "workspaces": [
+    "js"
   ],
-  "dependencies": {
-    "tsx": "^4.19.0"
+  "scripts": {
+    "build": "echo 'Nothing to build at root'",
+    "test:e2e": "cd js && node ../tests/run-tests.zsh"
   },
   "devDependencies": {
-    "typescript": "^5.6.3"
-  },
-  "scripts": {
-    "audit:auto-approve": "audit-auto-approve",
-    "audit:auto-approve:json": "audit-auto-approve --json --fail-on-risk"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "sideEffects": false,
-  "packageManager": "yarn@4.10.3"
+    "vitest": "^4.0.6"
+  }
 }
