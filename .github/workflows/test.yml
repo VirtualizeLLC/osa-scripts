@@ -15,6 +15,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
+      - name: Cache Homebrew
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Caches/Homebrew
+          key: ${{ runner.os }}-homebrew-${{ hashFiles('**/Brewfile') }}
+          restore-keys: |
+            ${{ runner.os }}-homebrew-
+      
       - name: Install dependencies
         run: |
           brew install bats-core

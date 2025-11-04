@@ -2,7 +2,7 @@
 # tests/test_entry_loading.bats - Tests for entry.zsh script loading
 
 setup() {
-  source tests/helpers.bash
+  source helpers.bash
   setup_test_env
 }
 
