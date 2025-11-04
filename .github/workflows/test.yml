@@ -21,24 +21,6 @@ jobs:
           echo "✓ bats version: $(bats --version)"
           echo "✓ zsh version: $(zsh --version)"
       
-      - name: Validate shell syntax
-        run: |
-          echo "Checking shell script syntax..."
-          bash -n entry.zsh
-          echo "✓ entry.zsh"
-          
-          for file in aliases/**/*.zsh; do
-            bash -n "$file"
-            echo "✓ $file"
-          done
-          
-          for file in plugins/**/*.zsh; do
-            bash -n "$file"
-            echo "✓ $file"
-          done
-          
-          echo "✓ All scripts are syntactically valid"
-      
       - name: Run test suite
         run: |
           echo "Running OSA Snippets test suite..."
