@@ -46,3 +46,17 @@ yarn-error.*
 # macOS
 .DS_Store
 *.pem
+
+
+# Yarn 4 (Berry)
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+!.yarnrc.yml
+.pnp.*
+# optional cache/state ignores
+.yarn/cache
+.yarn/unplugged
+.yarn/install-state.gz
