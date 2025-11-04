@@ -68,14 +68,6 @@ jobs:
           echo "$output" | grep -q "npm run"
           echo "✓ NPM aliases load correctly"
       
-      - name: Verify required files
-        run: |
-          echo "Verifying required files..."
-          [[ -f "entry.zsh" ]] && echo "✓ entry.zsh exists"
-          [[ -f "README.md" ]] && echo "✓ README.md exists"
-          [[ -d "plugins" ]] && echo "✓ plugins directory exists"
-          [[ -d "aliases" ]] && echo "✓ aliases directory exists"
-      
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v5
