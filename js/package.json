@@ -1,0 +1,44 @@
+{
+	"name": "@virtualize/osa-snippets",
+	"version": "0.1.0",
+	"type": "module",
+	"description": "Virtualize OSA snippets and safety tools for coding with AI and helpers for most developer tools.",
+	"license": "Apache-2.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/VirtualizeLLC/osa-snippets"
+	},
+	"bin": {
+		"osa": "./cli.ts"
+	},
+	"files": [
+		"commands/copilot/audit-auto-approve.ts",
+		"cli.ts",
+		"README.md",
+		"LICENSE"
+	],
+	"dependencies": {
+		"commander": "^12.1.0",
+		"tsx": "^4.19.0"
+	},
+	"devDependencies": {
+		"@types/commander": "^2.12.5",
+		"@types/node": "^22.0.0",
+		"@vitest/coverage-v8": "4.0.6",
+		"typescript": "^5.6.3",
+		"vitest": "^4.0.6"
+	},
+	"scripts": {
+		"cli": "tsx ./cli",
+		"run:publish": "yarn type-check && yarn publish",
+		"test": "vitest --run",
+		"type-check": "tsc --noEmit",
+		"audit:auto-approve": "audit-auto-approve",
+		"audit:auto-approve:json": "audit-auto-approve --json --fail-on-risk"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"sideEffects": false,
+	"packageManager": "yarn@4.10.3"
+}
