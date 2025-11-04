@@ -7,6 +7,7 @@
     "js"
   ],
   "scripts": {
+    "cli": "yarn workspace @virtualize/osa-snippets run cli",
     "lint": "biome check ./js",
     "test": "vitest ./js --run",
     "lint:fix": "biome check --fix ./js",

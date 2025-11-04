@@ -27,12 +27,33 @@ copilot
 	.description("Audit VSCode Copilot autoApproveTasks for safe Gradle patterns")
 	.option(
 		"--allow-prefix <list>",
-		"Comma-separated prefixes (e.g. tachyon,vllc)",
-		"tachyon",
+		"Comma-separated allowed prefixes (optional - will auto-scan if not provided)",
 	)
-	.option("--fail-on-risk", "Exit non-zero if risky patterns found", false)
+	.option(
+		"--settings-file <path>",
+		"Path to VSCode settings.json file to audit (searches user & workspace by default)",
+	)
+	.option("--fail-on-risk", "Exit non-zero if risky patterns found", true)
 	.option("--json", "Output JSON", false)
-	.action(auditAutoApprove);
+	.option("--scan-prefixes", "Auto-scan and report prefix health", false)
+	.option("--silent", "Suppress success messages", false)
+	.action(async (opts: {
+		allowPrefix?: string;
+		settingsFile?: string;
+		failOnRisk: boolean;
+		json: boolean;
+		scanPrefixes: boolean;
+		silent: boolean;
+	}) => {
+		await auditAutoApprove({
+			allowPrefix: opts.allowPrefix,
+			settingsFile: opts.settingsFile,
+			failOnRisk: opts.failOnRisk,
+			json: opts.json,
+			scanPrefixes: opts.scanPrefixes,
+			silent: opts.silent,
+		});
+	});
 
 // Command: setup
 program

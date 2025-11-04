@@ -1,0 +1,19 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        ":syntax-semicolon:echo hello;": true,
+        ":syntax-pipe:echo hello |": true,
+        ":syntax-and:echo hello &&": true,
+        ":syntax-or:echo hello ||": true,
+        ":path-absolute:rm -rf /etc/passwd": true,
+        ":path-home:rm -rf ~/Documents": true,
+        ":path-traversal:rm -rf ../../../etc": true,
+        ":path-double-slash:rm -rf //etc//passwd": true,
+        ":git-dangerous:git push --force": true,
+        ":git-reset:git reset --hard HEAD~10": true,
+        ":git-clean:git clean -fd": true,
+        ":shell-backtick:echo `rm -rf /`": true,
+        ":shell-substitution:echo $(rm -rf /)": true,
+        ":shell-background:rm -rf / &": true,
+        ":shell-null:rm -rf / > /dev/null": true
+    }
+}

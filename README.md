@@ -103,13 +103,18 @@ Key scripts designed to boost developer productivity:
 
 **`osa copilot audit-auto-approve`** - Audit GitHub Copilot Auto-Approve Tasks
 
-- **Problem Solved**: Ensures VSCode Copilot autoApproveTasks only contain safe Gradle patterns
-- **How It Works**: Scans VSCode settings for risky auto-approve patterns in Gradle build files
-- **Usage**: `osa copilot audit-auto-approve [--allow-prefix <prefixes>] [--fail-on-risk] [--json]`
+- **Problem Solved**: Ensures VSCode Copilot autoApproveTasks only contain safe patterns and blocks dangerous commands
+- **Security Guards**: Blocks rm -rf, directory traversal (..), privilege escalation (sudo), system operations, and more
+- **How It Works**: Scans VSCode user settings (~/.vscode/settings.json) and workspace settings (.vscode/settings.json) for risky auto-approve patterns
+- **Usage**: `osa copilot audit-auto-approve [--allow-prefix <prefixes>] [--settings-file <path>] [--scan-prefixes] [--fail-on-risk] [--json]`
 - **Options**:
-  - `--allow-prefix`: Comma-separated allowed prefixes (default: "tachyon")
+  - `--allow-prefix`: Optional comma-separated allowed prefixes for safe Gradle tasks (auto-scans if not provided)
+  - `--settings-file`: Optional path to specific VSCode settings.json (searches user & workspace by default)
+  - `--scan-prefixes`: Auto-scan and report health of all prefixes found
   - `--fail-on-risk`: Exit with error if risky patterns found
   - `--json`: Output results in JSON format
+- **Risky Patterns Blocked**: rm -rf (with dangerous paths), directory traversal, sudo, system commands, eval/exec, dangerous globs
+- **Safe rm -rf targets**: node_modules, build, dist, .next, .cache, temp directories
 - **Perfect For**: Security auditing, CI/CD pipelines, team policy enforcement
 
 ## Productivity Benefits

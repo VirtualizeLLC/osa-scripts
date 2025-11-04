@@ -1,0 +1,6 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "rm -rf ": true,
+        "rmdir": true
+    }
+}
