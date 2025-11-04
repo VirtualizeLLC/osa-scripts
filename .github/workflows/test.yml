@@ -32,8 +32,7 @@ jobs:
       - name: Run test suite
         run: |
           echo "Running OSA Snippets test suite..."
-          cd tests
-          bats *.bats
+          bats tests/*.bats
         
       - name: Setup Node.js
         uses: actions/setup-node@v6
