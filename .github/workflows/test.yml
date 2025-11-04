@@ -44,4 +44,4 @@ jobs:
         run: |
           echo "Running vitest test suite..."
           cd js
-          yarn test
+          yarn test:coverage
