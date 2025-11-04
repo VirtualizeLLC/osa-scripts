@@ -23,14 +23,14 @@ const RISKY_PATTERNS = [
 	/^~\//, // Home directory paths
 	/\/\.\./, // Embedded parent directory
 	/\/\/+/, // Multiple slashes (potential path confusion)
-	
+
 	// System and privilege escalation
 	/sudo/, // Privilege escalation
 	/su\s/, // Switch user
 	/chmod\s+777/, // Dangerous permissions
 	/chown\s+root/, // Root ownership
 	/chown\s+0/, // Root ownership by UID
-	
+
 	// System operations
 	/dd\s+if=/, // Disk operations
 	/mkfs/, // Filesystem creation
@@ -42,14 +42,14 @@ const RISKY_PATTERNS = [
 	/poweroff/, // Power off
 	/killall/, // Kill all processes
 	/pkill\s+-9/, // Force kill processes
-	
+
 	// Network and remote execution
 	/curl.*\|\s*(sh|bash|zsh)/, // Pipe to shell from curl
 	/wget.*\|\s*(sh|bash|zsh)/, // Pipe to shell from wget
 	/ssh\s/, // SSH commands
 	/scp\s/, // SCP file transfer
 	/rsync/, // Rsync operations
-	
+
 	// Code execution
 	/eval/, // Code evaluation
 	/exec/, // Command execution
@@ -61,7 +61,7 @@ const RISKY_PATTERNS = [
 	/python\s+-c/, // Python -c execution
 	/perl\s+-e/, // Perl -e execution
 	/ruby\s+-e/, // Ruby -e execution
-	
+
 	// Sensitive files and directories
 	/~\/\.ssh/, // SSH keys
 	/\/etc\/passwd/, // System password file
@@ -72,37 +72,37 @@ const RISKY_PATTERNS = [
 	/\/var\/log/, // System logs
 	/\/proc/, // Process information
 	/\/sys/, // System information
-	
+
 	// Database operations
 	/mysql\s+/, // MySQL commands
 	/psql\s+/, // PostgreSQL commands
 	/mongo\s+/, // MongoDB commands
 	/redis-cli/, // Redis commands
-	
+
 	// Package managers with dangerous flags
 	/npm\s+install\s+.*-g/, // Global npm installs
 	/pip\s+install\s+.*--user/, // User pip installs
 	/apt-get\s+install/, // System package installation
 	/yum\s+install/, // System package installation
 	/brew\s+install/, // Homebrew installation
-	
+
 	// Git operations that could be dangerous
 	/git\s+push\s+--force/, // Force push
 	/git\s+reset\s+--hard/, // Hard reset
 	/git\s+clean\s+-fd/, // Force clean
-	
+
 	// Dangerous shell constructs
 	/`.*`/, // Backticks (command substitution)
 	/\$\(.*\)/, // Command substitution
 	/>\s*\/dev\/null/, // Redirecting to null (hiding output)
 	/&\s*$/, // Background processes without proper handling
-	
+
 	// Unterminated or malformed patterns
 	/;\s*$/, // Commands ending with semicolon (potential chaining)
 	/\|\s*$/, // Commands ending with pipe (incomplete pipeline)
 	/&&\s*$/, // Commands ending with AND (incomplete conditional)
 	/\|\|\s*$/, // Commands ending with OR (incomplete conditional)
-	
+
 	// Path manipulation
 	/PATH=/, // PATH manipulation
 	/LD_LIBRARY_PATH=/, // Library path manipulation
@@ -135,29 +135,34 @@ function isDangerousRmRf(pattern: string): boolean {
 	// If it contains rm -rf, check if it's dangerous
 	if (/rm\s+-rf/.test(pattern)) {
 		// Check if it matches any dangerous patterns
-		const hasDangerousPattern = DANGEROUS_RM_PATTERNS.some(dangerous => dangerous.test(pattern));
+		const hasDangerousPattern = DANGEROUS_RM_PATTERNS.some((dangerous) =>
+			dangerous.test(pattern),
+		);
 		if (hasDangerousPattern) return true;
-		
+
 		// If no dangerous patterns, check if it's a safe target
-		const hasSafeTarget = SAFE_RM_TARGETS.some(safe => safe.test(pattern));
+		const hasSafeTarget = SAFE_RM_TARGETS.some((safe) => safe.test(pattern));
 		// If it's not a safe target, it's risky
 		return !hasSafeTarget;
 	}
 	return false;
 }
 
-function validatePatternSyntax(pattern: string): { valid: boolean; issues: string[] } {
+function validatePatternSyntax(pattern: string): {
+	valid: boolean;
+	issues: string[];
+} {
 	const issues: string[] = [];
-	
+
 	// Check for unterminated quotes
 	const singleQuotes = (pattern.match(/'/g) || []).length;
 	const doubleQuotes = (pattern.match(/"/g) || []).length;
 	const backticks = (pattern.match(/`/g) || []).length;
-	
+
 	if (singleQuotes % 2 !== 0) issues.push("unterminated single quotes");
 	if (doubleQuotes % 2 !== 0) issues.push("unterminated double quotes");
 	if (backticks % 2 !== 0) issues.push("unterminated backticks");
-	
+
 	// Check for unbalanced parentheses/brackets
 	const openParens = (pattern.match(/\(/g) || []).length;
 	const closeParens = (pattern.match(/\)/g) || []).length;
@@ -165,26 +170,26 @@ function validatePatternSyntax(pattern: string): { valid: boolean; issues: strin
 	const closeBrackets = (pattern.match(/\]/g) || []).length;
 	const openBraces = (pattern.match(/\{/g) || []).length;
 	const closeBraces = (pattern.match(/\}/g) || []).length;
-	
+
 	if (openParens !== closeParens) issues.push("unbalanced parentheses");
 	if (openBrackets !== closeBrackets) issues.push("unbalanced brackets");
 	if (openBraces !== closeBraces) issues.push("unbalanced braces");
-	
+
 	// Check for dangerous path constructs
 	if (pattern.includes("/../") || pattern.includes("\\..\\")) {
 		issues.push("directory traversal (..)");
 	}
-	
+
 	// Check for null bytes
-	if (pattern.includes('\0')) {
+	if (pattern.includes("\0")) {
 		issues.push("null bytes detected");
 	}
-	
+
 	// Check for extremely long patterns (potential DoS)
 	if (pattern.length > 1000) {
 		issues.push("pattern too long");
 	}
-	
+
 	return { valid: issues.length === 0, issues };
 }
 
@@ -193,19 +198,26 @@ function buildSafeTemplate(prefixes: string[]): RegExp {
 		.map((p) => p.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"))
 		.join("|");
 	// Allowed examples:
-	//   :tachyon-archiver:downloadZstd
-	//   :tachyon-something           (module only)
-	//   :tachyon-something:task      (module + task)
+	//   :tachyon:downloadZstd
+	//   :tachyon:something           (module only)
+	//   :tachyon:something:task      (module + task)
 	//   :clean                       (global clean)
-	const pattern = `^:(${alt})-[A-Za-z0-9_-]+(:[A-Za-z0-9_-]+)?$|^:clean$`;
+	const pattern = `^:(${alt}):[A-Za-z0-9_-]+(:[A-Za-z0-9_-]+)?$|^:clean$`;
 	return new RegExp(pattern);
 }
 
 function readSettingsFiles(baseDir = cwd()): string[] {
 	const results: string[] = [];
-	
+
 	// Add user settings file (global VSCode settings)
-	const userSettingsPath = join(homedir(), "Library", "Application Support", "Code", "User", "settings.json");
+	const userSettingsPath = join(
+		homedir(),
+		"Library",
+		"Application Support",
+		"Code",
+		"User",
+		"settings.json",
+	);
 	try {
 		if (readFileSync(userSettingsPath)) {
 			results.push(userSettingsPath);
@@ -213,7 +225,7 @@ function readSettingsFiles(baseDir = cwd()): string[] {
 	} catch {
 		// User settings file doesn't exist or isn't readable
 	}
-	
+
 	// Add workspace settings files (.vscode/settings.json)
 	const recurse = (dir: string) => {
 		for (const e of readdirSync(dir, { withFileTypes: true })) {
@@ -259,9 +271,12 @@ export async function auditAutoApprove(opts: {
 	scanPrefixes?: boolean; // New option to auto-scan prefixes
 }) {
 	const explicitPrefixes = opts.allowPrefix
-		? opts.allowPrefix.split(",").map((s) => s.trim()).filter(Boolean)
+		? opts.allowPrefix
+				.split(",")
+				.map((s) => s.trim())
+				.filter(Boolean)
 		: [];
-	
+
 	const findings: Finding[] = [];
 	const prefixHealth: Map<string, PrefixHealth> = new Map();
 
@@ -288,8 +303,8 @@ export async function auditAutoApprove(opts: {
 				continue;
 			}
 
-			// Extract prefix from pattern (e.g., ":tachyon-something" -> "tachyon")
-			const prefixMatch = pattern.match(/^:([a-zA-Z0-9_-]+)-/);
+			// Extract prefix from pattern (e.g., ":tachyon:build" -> "tachyon")
+			const prefixMatch = pattern.match(/^:([a-zA-Z0-9_-]+):/);
 			const prefix = prefixMatch ? prefixMatch[1] : "unknown";
 
 			// Initialize prefix health tracking
@@ -318,16 +333,23 @@ export async function auditAutoApprove(opts: {
 			const isRiskyPattern = RISKY_PATTERNS.some((riskyRegex) =>
 				riskyRegex.test(pattern),
 			);
-			
+
 			// Special handling for rm -rf commands
 			const isDangerousRm = isDangerousRmRf(pattern);
-			
+
 			// Check if pattern matches allowed prefixes (if specified)
-			const safe = explicitPrefixes.length > 0 ? buildSafeTemplate(explicitPrefixes) : null;
+			const safe =
+				explicitPrefixes.length > 0
+					? buildSafeTemplate(explicitPrefixes)
+					: null;
 			const isAllowed = safe ? safe.test(pattern) : true; // If no explicit prefixes, allow all
-			
-			const isRisky = isRiskyPattern || isDangerousRm || !isAllowed || !syntaxValidation.valid;
-			
+
+			const isRisky =
+				isRiskyPattern ||
+				isDangerousRm ||
+				!isAllowed ||
+				!syntaxValidation.valid;
+
 			if (isRisky) {
 				health.riskyPatterns++;
 				health.riskyList.push(pattern);
@@ -350,16 +372,23 @@ export async function auditAutoApprove(opts: {
 	}
 
 	if (opts.json) {
-		console.log(JSON.stringify({ 
-			findings, 
-			prefixes: explicitPrefixes,
-			prefixHealth: Object.fromEntries(prefixHealth)
-		}, null, 2));
+		console.log(
+			JSON.stringify(
+				{
+					findings,
+					prefixes: explicitPrefixes,
+					prefixHealth: Object.fromEntries(prefixHealth),
+				},
+				null,
+				2,
+			),
+		);
 	} else if (!findings.length) {
 		if (!opts.silent) {
-			const prefixMsg = explicitPrefixes.length > 0 
-				? ` for prefixes: ${explicitPrefixes.join(", ")}`
-				: "";
+			const prefixMsg =
+				explicitPrefixes.length > 0
+					? ` for prefixes: ${explicitPrefixes.join(", ")}`
+					: "";
 			console.log(`✅ All autoApprove entries are safe${prefixMsg}`);
 		}
 	} else {
@@ -370,34 +399,53 @@ export async function auditAutoApprove(opts: {
 			for (const f of findings) {
 				console.log(`- ${f.file}`);
 				for (const p of f.riskyPatterns)
-					console.log(`    \x1b[31m✖ risky (enabled & not allowed):\x1b[37m ${p}\x1b[0m`);
+					console.log(
+						`    \x1b[31m✖ risky (enabled & not allowed):\x1b[37m ${p}\x1b[0m`,
+					);
 			}
 			if (explicitPrefixes.length > 0) {
-				console.log(`\nExpected safe pattern:\n${buildSafeTemplate(explicitPrefixes)}`);
+				console.log(
+					`\nExpected safe pattern:\n${buildSafeTemplate(explicitPrefixes)}`,
+				);
 			}
 		}
 	}
 	if (findings.length && opts.failOnRisk) exit(1);
 }
 
-function reportPrefixHealth(prefixHealth: Map<string, PrefixHealth>, json: boolean) {
+function reportPrefixHealth(
+	prefixHealth: Map<string, PrefixHealth>,
+	json: boolean,
+) {
 	const healthArray = Array.from(prefixHealth.values());
-	
+
 	if (json) return; // Will be included in main JSON output
-	
+
 	console.log("\n📊 Prefix Health Report:");
 	console.log("========================");
-	
-	for (const health of healthArray.sort((a, b) => b.totalPatterns - a.totalPatterns)) {
-		const riskPercentage = health.totalPatterns > 0 
-			? Math.round((health.riskyPatterns / health.totalPatterns) * 100)
-			: 0;
-		
-		const status = health.riskyPatterns === 0 ? "✅" : health.safePatterns === 0 ? "❌" : "⚠️";
-		console.log(`${status} ${health.prefix}: ${health.safePatterns}/${health.totalPatterns} safe (${riskPercentage}% risky)`);
-		
+
+	for (const health of healthArray.sort(
+		(a, b) => b.totalPatterns - a.totalPatterns,
+	)) {
+		const riskPercentage =
+			health.totalPatterns > 0
+				? Math.round((health.riskyPatterns / health.totalPatterns) * 100)
+				: 0;
+
+		const status =
+			health.riskyPatterns === 0
+				? "✅"
+				: health.safePatterns === 0
+					? "❌"
+					: "⚠️";
+		console.log(
+			`${status} ${health.prefix}: ${health.safePatterns}/${health.totalPatterns} safe (${riskPercentage}% risky)`,
+		);
+
 		if (health.riskyPatterns > 0) {
-			console.log(`    Risky patterns: ${health.riskyList.slice(0, 3).join(", ")}${health.riskyList.length > 3 ? "..." : ""}`);
+			console.log(
+				`    Risky patterns: ${health.riskyList.slice(0, 3).join(", ")}${health.riskyList.length > 3 ? "..." : ""}`,
+			);
 		}
 	}
 	console.log("");

@@ -1,23 +1,25 @@
 {
-  "name": "osa-snippets",
-  "private": true,
-  "packageManager": "yarn@4.10.3",
-  "type": "module",
-  "workspaces": [
-    "js"
-  ],
-  "scripts": {
-    "cli": "yarn workspace @virtualize/osa-snippets run cli",
-    "lint": "biome check ./js",
-    "test": "vitest ./js --run",
-    "lint:fix": "biome check --fix ./js",
-    "build": "echo 'Nothing to build at root'",
-    "test:e2e": "cd js && node ../tests/run-tests.zsh"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "^2.3.3",
-    "@types/commander": "^2.12.5",
-    "@types/node": "^22.0.0",
-    "vitest": "^4.0.6"
-  }
+	"name": "osa-snippets",
+	"private": true,
+	"packageManager": "yarn@4.10.3",
+	"type": "module",
+	"workspaces": [
+		"js"
+	],
+	"scripts": {
+		"cli": "yarn workspace @virtualize/osa-snippets run cli",
+		"lint": "biome check ./js",
+		"test": "vitest ./js --run",
+		"test:coverage": "vitest ./js --run --coverage",
+		"lint:fix": "biome check --fix ./js",
+		"build": "echo 'Nothing to build at root'",
+		"test:e2e": "cd js && node ../tests/run-tests.zsh"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.3.3",
+		"@types/commander": "^2.12.5",
+		"@types/node": "^22.0.0",
+		"@vitest/coverage-v8": "4.0.6",
+		"vitest": "^4.0.6"
+	}
 }

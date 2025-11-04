@@ -60,3 +60,8 @@ yarn-error.*
 .yarn/cache
 .yarn/unplugged
 .yarn/install-state.gz
+
+# vites
+coverage
+
+js/coverage

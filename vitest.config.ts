@@ -4,8 +4,8 @@ export default defineConfig({
 	test: {
 		environment: "node",
 		coverage: {
-			include: ["./**/*"],
-      		exclude: ["node_modules", "vitest.config.ts", "./cli.ts", "./**/*.json"],
+			include: ["js/**/*"],
+			exclude: ["node_modules","./**/*.json", "./js/cli.ts"],
 			// Global thresholds
 			thresholds: {
 				lines: 95,

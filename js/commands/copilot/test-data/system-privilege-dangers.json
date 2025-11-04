@@ -1,18 +1,18 @@
 {
-    "chat.tools.terminal.autoApprove": {
-        ":system-shutdown:shutdown -h now": true,
-        ":system-reboot:reboot": true,
-        ":system-halt:halt": true,
-        ":system-kill:killall -9 node": true,
-        ":system-pkill:pkill -9 java": true,
-        ":privilege-sudo:sudo rm -rf /": true,
-        ":privilege-su:su root": true,
-        ":dangerous-chmod:chmod 777 /etc/passwd": true,
-        ":dangerous-chown:chown root:root /home/user": true,
-        ":dangerous-chown-uid:chown 0:0 /var/log": true,
-        ":disk-dd:dd if=/dev/zero of=/dev/sda": true,
-        ":disk-mkfs:mkfs.ext4 /dev/sdb": true,
-        ":disk-fdisk:fdisk /dev/sdc": true,
-        ":disk-format:format C:": true
-    }
+	"chat.tools.terminal.autoApprove": {
+		":system-shutdown:shutdown -h now": true,
+		":system-reboot:reboot": true,
+		":system-halt:halt": true,
+		":system-kill:killall -9 node": true,
+		":system-pkill:pkill -9 java": true,
+		":privilege-sudo:sudo rm -rf /": true,
+		":privilege-su:su root": true,
+		":dangerous-chmod:chmod 777 /etc/passwd": true,
+		":dangerous-chown:chown root:root /home/user": true,
+		":dangerous-chown-uid:chown 0:0 /var/log": true,
+		":disk-dd:dd if=/dev/zero of=/dev/sda": true,
+		":disk-mkfs:mkfs.ext4 /dev/sdb": true,
+		":disk-fdisk:fdisk /dev/sdc": true,
+		":disk-format:format C:": true
+	}
 }

@@ -37,23 +37,25 @@ copilot
 	.option("--json", "Output JSON", false)
 	.option("--scan-prefixes", "Auto-scan and report prefix health", false)
 	.option("--silent", "Suppress success messages", false)
-	.action(async (opts: {
-		allowPrefix?: string;
-		settingsFile?: string;
-		failOnRisk: boolean;
-		json: boolean;
-		scanPrefixes: boolean;
-		silent: boolean;
-	}) => {
-		await auditAutoApprove({
-			allowPrefix: opts.allowPrefix,
-			settingsFile: opts.settingsFile,
-			failOnRisk: opts.failOnRisk,
-			json: opts.json,
-			scanPrefixes: opts.scanPrefixes,
-			silent: opts.silent,
-		});
-	});
+	.action(
+		async (opts: {
+			allowPrefix?: string;
+			settingsFile?: string;
+			failOnRisk: boolean;
+			json: boolean;
+			scanPrefixes: boolean;
+			silent: boolean;
+		}) => {
+			await auditAutoApprove({
+				allowPrefix: opts.allowPrefix,
+				settingsFile: opts.settingsFile,
+				failOnRisk: opts.failOnRisk,
+				json: opts.json,
+				scanPrefixes: opts.scanPrefixes,
+				silent: opts.silent,
+			});
+		},
+	);
 
 // Command: setup
 program
