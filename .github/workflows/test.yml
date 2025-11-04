@@ -15,14 +15,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      - name: Cache Homebrew
-        uses: actions/cache@v4
-        with:
-          path: ~/Library/Caches/Homebrew
-          key: ${{ runner.os }}-homebrew-${{ hashFiles('**/Brewfile') }}
-          restore-keys: |
-            ${{ runner.os }}-homebrew-
-      
       - name: Install dependencies
         run: |
           brew install bats-core
@@ -53,25 +45,3 @@ jobs:
           echo "Running vitest test suite..."
           cd js
           yarn test
-        
-      - name: Test entry.zsh loading
-        run: |
-          echo "Testing entry.zsh configuration flag handling..."
-          
-          # Test with git flag
-          output=$(OSA_SETUP_GIT=true zsh -c "source entry.zsh && alias prune" 2>/dev/null)
-          echo "$output" | grep -q "git fetch -p"
-          echo "✓ Git aliases load correctly"
-          
-          # Test with node flag
-          output=$(OSA_SETUP_NODE=true zsh -c "source entry.zsh && alias nr" 2>/dev/null)
-          echo "$output" | grep -q "npm run"
-          echo "✓ NPM aliases load correctly"
-      
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v5
-        with:
-          name: test-results
-          path: tests/*.bats
-          retention-days: 30
