@@ -45,6 +45,26 @@ jobs:
           cd tests
           bats *.bats
         
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      
+      - name: Enable Corepack
+        run: corepack enable
+      
+      - name: Install JS dependencies
+        run: |
+          echo "Installing JavaScript dependencies..."
+          cd js
+          yarn install --immutable
+      
+      - name: Run vitest tests
+        run: |
+          echo "Running vitest test suite..."
+          cd js
+          yarn test
+        
       - name: Test entry.zsh loading
         run: |
           echo "Testing entry.zsh configuration flag handling..."
@@ -69,7 +89,7 @@ jobs:
       
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: test-results
           path: tests/*.bats
