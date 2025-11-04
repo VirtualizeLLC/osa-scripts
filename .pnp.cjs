@@ -567,6 +567,16 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@types/commander", [\
+      ["npm:2.12.5", {\
+        "packageLocation": "../../.yarn/berry/cache/@types-commander-npm-2.12.5-a85c64ac4c-10c0.zip/node_modules/@types/commander/",\
+        "packageDependencies": [\
+          ["@types/commander", "npm:2.12.5"],\
+          ["commander", "npm:14.0.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@types/deep-eql", [\
       ["npm:4.0.2", {\
         "packageLocation": "../../.yarn/berry/cache/@types-deep-eql-npm-4.0.2-e6bc68cc92-10c0.zip/node_modules/@types/deep-eql/",\
@@ -585,11 +595,24 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@types/node", [\
+      ["npm:22.19.0", {\
+        "packageLocation": "../../.yarn/berry/cache/@types-node-npm-22.19.0-13cee709ff-10c0.zip/node_modules/@types/node/",\
+        "packageDependencies": [\
+          ["@types/node", "npm:22.19.0"],\
+          ["undici-types", "npm:6.21.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@virtualize/osa-snippets", [\
       ["workspace:js", {\
         "packageLocation": "./js/",\
         "packageDependencies": [\
+          ["@types/commander", "npm:2.12.5"],\
+          ["@types/node", "npm:22.19.0"],\
           ["@virtualize/osa-snippets", "workspace:js"],\
+          ["commander", "npm:12.1.0"],\
           ["tsx", "npm:4.20.6"],\
           ["typescript", "patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"]\
         ],\
@@ -826,6 +849,22 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../.yarn/berry/cache/color-name-npm-1.1.4-025792b0ea-10c0.zip/node_modules/color-name/",\
         "packageDependencies": [\
           ["color-name", "npm:1.1.4"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["commander", [\
+      ["npm:12.1.0", {\
+        "packageLocation": "../../.yarn/berry/cache/commander-npm-12.1.0-65c868e907-10c0.zip/node_modules/commander/",\
+        "packageDependencies": [\
+          ["commander", "npm:12.1.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:14.0.2", {\
+        "packageLocation": "../../.yarn/berry/cache/commander-npm-14.0.2-538b84c387-10c0.zip/node_modules/commander/",\
+        "packageDependencies": [\
+          ["commander", "npm:14.0.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -1748,6 +1787,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../.yarn/berry/cache/typescript-patch-6fda4d02cf-10c0.zip/node_modules/typescript/",\
         "packageDependencies": [\
           ["typescript", "patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["undici-types", [\
+      ["npm:6.21.0", {\
+        "packageLocation": "../../.yarn/berry/cache/undici-types-npm-6.21.0-eb2b0ed56a-10c0.zip/node_modules/undici-types/",\
+        "packageDependencies": [\
+          ["undici-types", "npm:6.21.0"]\
         ],\
         "linkType": "HARD"\
       }]\

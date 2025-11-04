@@ -417,6 +417,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/commander@npm:^2.12.5":
+  version: 2.12.5
+  resolution: "@types/commander@npm:2.12.5"
+  dependencies:
+    commander: "npm:*"
+  checksum: 10c0/2ac2607329b83a74df0c86bba035edd8e9a6191a520cca20f360cef6fa7d7d755de1c006b86a73933394abacd7622a339b508bb6b467dd06cdee7b6ef35ec66c
+  languageName: node
+  linkType: hard
+
 "@types/deep-eql@npm:*":
   version: 4.0.2
   resolution: "@types/deep-eql@npm:4.0.2"
@@ -431,14 +440,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^22.0.0":
+  version: 22.19.0
+  resolution: "@types/node@npm:22.19.0"
+  dependencies:
+    undici-types: "npm:~6.21.0"
+  checksum: 10c0/66b98fcd38efb4ae58c628d61fed2b8f17c830eb665d8bceabc4174cae1dd81b8e4caac4c70d7dc929f9f76a3dc46cb21f480e904d0b898297bd12c0a2d1571a
+  languageName: node
+  linkType: hard
+
 "@virtualize/osa-snippets@workspace:js":
   version: 0.0.0-use.local
   resolution: "@virtualize/osa-snippets@workspace:js"
   dependencies:
+    "@types/commander": "npm:^2.12.5"
+    "@types/node": "npm:^22.0.0"
+    commander: "npm:^12.1.0"
     tsx: "npm:^4.19.0"
     typescript: "npm:^5.6.3"
   bin:
-    audit-auto-approve: ./js/tools/audit/audit-auto-approve.ts
+    osa: ./src/cli.ts
   languageName: unknown
   linkType: soft
 
@@ -636,6 +657,20 @@ __metadata:
   version: 1.1.4
   resolution: "color-name@npm:1.1.4"
   checksum: 10c0/a1a3f914156960902f46f7f56bc62effc6c94e84b2cae157a526b1c1f74b677a47ec602bf68a61abfa2b42d15b7c5651c6dbe72a43af720bc588dff885b10f95
+  languageName: node
+  linkType: hard
+
+"commander@npm:*":
+  version: 14.0.2
+  resolution: "commander@npm:14.0.2"
+  checksum: 10c0/245abd1349dbad5414cb6517b7b5c584895c02c4f7836ff5395f301192b8566f9796c82d7bd6c92d07eba8775fe4df86602fca5d86d8d10bcc2aded1e21c2aeb
+  languageName: node
+  linkType: hard
+
+"commander@npm:^12.1.0":
+  version: 12.1.0
+  resolution: "commander@npm:12.1.0"
+  checksum: 10c0/6e1996680c083b3b897bfc1cfe1c58dfbcd9842fd43e1aaf8a795fbc237f65efcc860a3ef457b318e73f29a4f4a28f6403c3d653d021d960e4632dd45bde54a9
   languageName: node
   linkType: hard
 
@@ -1569,6 +1604,13 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/ad09fdf7a756814dce65bc60c1657b40d44451346858eea230e10f2e95a289d9183b6e32e5c11e95acc0ccc214b4f36289dcad4bf1886b0adb84d711d336a430
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~6.21.0":
+  version: 6.21.0
+  resolution: "undici-types@npm:6.21.0"
+  checksum: 10c0/c01ed51829b10aa72fc3ce64b747f8e74ae9b60eafa19a7b46ef624403508a54c526ffab06a14a26b3120d055e1104d7abe7c9017e83ced038ea5cf52f8d5e04
   languageName: node
   linkType: hard
 
