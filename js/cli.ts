@@ -2,6 +2,7 @@
 import { execSync } from "child_process";
 import { Command } from "commander";
 import { auditAutoApprove } from "./commands/copilot/audit-auto-approve.ts";
+import { makeCheckDomainsCommand } from "./commands/domain-availability-checker/domain-availability-checker.ts";
 
 const packageJson = await import("./package.json", {
 	with: { type: "json" },
@@ -20,6 +21,8 @@ program
 const copilot = program
 	.command("copilot")
 	.description("GitHub Copilot helpers");
+
+program.addCommand(makeCheckDomainsCommand());
 
 // Subcommand: copilot audit-auto-approve
 copilot
