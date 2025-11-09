@@ -1,0 +1,174 @@
+summary:
+  registered: 13
+  likely-available: 4
+  unknown: 3
+results:
+  - domain: virtualize.com
+    name: virtualize
+    tld: com
+    status: registered
+    elapsedMs: 262
+    parsedSummary: >-
+      domainName:VIRTUALIZE.COM | registrar:DYNADOT LLC |
+      creationDate:2002-08-25T18:05:14.0Z | updatedDate:2025-08-03T22:14:12.0Z
+    rawSnippet: ''
+  - domain: virtualize.dev
+    name: virtualize
+    tld: dev
+    status: likely-available
+    elapsedMs: 110
+    parsedSummary: ''
+    rawSnippet: 'Error: getaddrinfo ENOTFOUND whois.nic.google'
+  - domain: virtualize.io
+    name: virtualize
+    tld: io
+    status: registered
+    elapsedMs: 359
+    parsedSummary: >-
+      domainName:VIRTUALIZE.IO | registrar:DYNADOT LLC |
+      creationDate:2013-07-09T16:04:31.0Z | updatedDate:2025-09-05T21:54:58.0Z
+    rawSnippet: ''
+  - domain: virtualize.net
+    name: virtualize
+    tld: net
+    status: registered
+    elapsedMs: 4006
+    parsedSummary: >-
+      domainName:virtualize.net | registrar:NAMECHEAP INC |
+      creationDate:1997-11-26T05:00:00.00Z | updatedDate:2024-02-03T05:06:33.00Z
+    rawSnippet: ''
+  - domain: virtualize.ai
+    name: virtualize
+    tld: ai
+    status: registered
+    elapsedMs: 430
+    parsedSummary: >-
+      domainName:virtualize.ai | registrar:GoDaddy.com, LLC |
+      creationDate:2020-06-14T23:47:33Z | updatedDate:2025-01-21T15:27:50Z
+    rawSnippet: ''
+  - domain: vize.com
+    name: vize
+    tld: com
+    status: registered
+    elapsedMs: 654
+    parsedSummary: >-
+      domainName:vize.com | registrar:GRANSY S.R.O D/B/A SUBREG.CZ |
+      creationDate:1999-01-23T00:00:00Z | updatedDate:2025-01-24T00:00:00Z
+    rawSnippet: ''
+  - domain: vize.dev
+    name: vize
+    tld: dev
+    status: likely-available
+    elapsedMs: 198
+    parsedSummary: ''
+    rawSnippet: 'Error: getaddrinfo ENOTFOUND whois.nic.google'
+  - domain: vize.io
+    name: vize
+    tld: io
+    status: unknown
+    elapsedMs: 639
+    parsedSummary: ''
+    rawSnippet: ''
+  - domain: vize.net
+    name: vize
+    tld: net
+    status: registered
+    elapsedMs: 1840
+    parsedSummary: >-
+      domainName:VIZE.NET | registrar:NICS Telekomunikasyon A.S. |
+      creationDate:2006-03-19T19:07:10Z | updatedDate:2025-03-21T18:57:34Z
+    rawSnippet: ''
+  - domain: vize.ai
+    name: vize
+    tld: ai
+    status: registered
+    elapsedMs: 1646
+    parsedSummary: >-
+      domainName:vize.ai | registrar:NAMECHEAP INC |
+      creationDate:2025-08-09T13:52:49.14Z | updatedDate:0001-01-01T00:00:00.00Z
+    rawSnippet: ''
+  - domain: vldev.com
+    name: vldev
+    tld: com
+    status: registered
+    elapsedMs: 237
+    parsedSummary: >-
+      domainName:VLDEV.COM | registrar:TurnCommerce, Inc. DBA NameBright.com |
+      creationDate:2018-08-29T18:30:24.000Z |
+      updatedDate:2020-08-23T07:17:39.321Z
+    rawSnippet: ''
+  - domain: vldev.dev
+    name: vldev
+    tld: dev
+    status: likely-available
+    elapsedMs: 8
+    parsedSummary: ''
+    rawSnippet: 'Error: getaddrinfo ENOTFOUND whois.nic.google'
+  - domain: vldev.io
+    name: vldev
+    tld: io
+    status: unknown
+    elapsedMs: 49
+    parsedSummary: ''
+    rawSnippet: ''
+  - domain: vldev.net
+    name: vldev
+    tld: net
+    status: registered
+    elapsedMs: 570
+    parsedSummary: >-
+      domainName:VLDEV.NET | registrar:TUCOWS DOMAINS, INC. |
+      creationDate:2017-09-26T07:21:17 | updatedDate:2025-06-02T00:04:12
+    rawSnippet: ''
+  - domain: vldev.ai
+    name: vldev
+    tld: ai
+    status: unknown
+    elapsedMs: 49
+    parsedSummary: ''
+    rawSnippet: ''
+  - domain: testdomain.com
+    name: testdomain
+    tld: com
+    status: registered
+    elapsedMs: 247
+    parsedSummary: >-
+      domainName:testdomain.com | registrar:GoDaddy.com, LLC |
+      creationDate:2002-05-28T13:22:16Z | updatedDate:2025-05-08T15:30:07Z
+    rawSnippet: ''
+  - domain: testdomain.dev
+    name: testdomain
+    tld: dev
+    status: likely-available
+    elapsedMs: 136
+    parsedSummary: ''
+    rawSnippet: 'Error: getaddrinfo ENOTFOUND whois.nic.google'
+  - domain: testdomain.io
+    name: testdomain
+    tld: io
+    status: registered
+    elapsedMs: 618
+    parsedSummary: >-
+      domainName:testdomain.io | registrar:GANDI SAS |
+      creationDate:2015-11-25T03:26:32Z | updatedDate:2025-10-21T04:27:42Z
+    rawSnippet: ''
+  - domain: testdomain.net
+    name: testdomain
+    tld: net
+    status: registered
+    elapsedMs: 459
+    parsedSummary: >-
+      domainName:testdomain.net | registrar:Key-Systems GmbH |
+      creationDate:2018-08-09T18:08:03Z | updatedDate:2025-08-10T07:28:00Z
+    rawSnippet: ''
+  - domain: testdomain.ai
+    name: testdomain
+    tld: ai
+    status: registered
+    elapsedMs: 192
+    parsedSummary: >-
+      domainName:testdomain.ai | registrar:One.com A/S |
+      creationDate:2025-03-14T12:02:50Z | updatedDate:2025-03-19T12:03:27Z
+    rawSnippet: ''
+generatedAt: '2025-11-09T07:30:46.041Z'
+total: 20

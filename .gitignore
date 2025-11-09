@@ -68,4 +68,9 @@ js/coverage
 
 # results outputs
 ./**/domain-results.*
+./**/domain-check-results.*
 js/domain-results.*
+js/domain-check-results.*
+
+js/domains-to-test.*
+domains-to-test.*

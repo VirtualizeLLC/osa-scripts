@@ -44,6 +44,5 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"sideEffects": false,
-	"packageManager": "yarn@4.10.3"
+	"sideEffects": false
 }

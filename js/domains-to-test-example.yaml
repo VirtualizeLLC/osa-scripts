@@ -1,0 +1,22 @@
+# osa/scripts/domain-input.yaml
+
+names:
+  - swift-brown-fox
+  - clever-red-hedgehog
+  - bright-yellow-canary
+  - silent-white-owl
+  - agile-panda
+  - mightyblue
+  - frog
+
+domainProviders:
+  - whois      # your existing WHOIS/RDAP checker
+  - domainr    # if you add API support later
+  - cloudflare # ideal if you want authoritative registrar results
+
+tlds:
+  - dev
+  - com
+  - net
+  - ai
+  - io

@@ -5,7 +5,8 @@
  * - Also runnable directly (detects direct-run vs import).
  */
 
-import fs from "node:fs";
+import * as fs from "node:fs";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { Command } from "commander";
 import { stringify as csvStringify } from "csv-stringify/sync";
@@ -47,7 +48,14 @@ interface YamlConfig {
 
 export function readYamlConfig(filePath: string): YamlConfig | null {
 	try {
-		const text = fs.readFileSync(filePath, "utf8");
+		let resolvedPath = filePath;
+		// Only try workspace root resolution for relative paths that look like they should be relative to workspace
+		if ((filePath.startsWith('./') || filePath.startsWith('../')) && !fs.existsSync(filePath)) {
+			const currentDir = dirname(fileURLToPath(import.meta.url));
+			const workspaceRoot = resolve(currentDir, '..', '..', '..');
+			resolvedPath = resolve(workspaceRoot, filePath);
+		}
+		const text = fs.readFileSync(resolvedPath, "utf8");
 		const config = yaml.load(text) as YamlConfig;
 		return config || null;
 	} catch {
@@ -78,7 +86,13 @@ export function readNamesFromInputs(
 			}
 		} else {
 			// Fall back to plain text (one name per line)
-			const text = fs.readFileSync(filePath, "utf8");
+			let resolvedPath = filePath;
+			if ((filePath.startsWith('./') || filePath.startsWith('../')) && !fs.existsSync(filePath)) {
+				const currentDir = dirname(fileURLToPath(import.meta.url));
+				const workspaceRoot = resolve(currentDir, '..', '..', '..');
+				resolvedPath = resolve(workspaceRoot, filePath);
+			}
+			const text = fs.readFileSync(resolvedPath, "utf8");
 			for (const line of text.split(/\r?\n/)) {
 				const t = line.trim().toLowerCase();
 				if (t) names.add(t);
@@ -89,7 +103,10 @@ export function readNamesFromInputs(
 	return Array.from(names);
 }
 
-export function readTldsFromInputs(tldsList: string[], filePath?: string): string[] {
+export function readTldsFromInputs(
+	tldsList: string[],
+	filePath?: string,
+): string[] {
 	const tlds = new Set<string>();
 
 	// Add provided tlds
@@ -320,7 +337,11 @@ export function makeCheckDomainsCommand(): Command {
 		)
 		.option("--format <format>", "Output format: csv, json, or yaml", "csv")
 		.option("--timeout-ms <n>", "Lookup timeout (ms, default 20000)", "20000")
-		.option("-o, --out <file>", "Output CSV path", "domain-check-results.csv")
+		.option(
+			"-o, --out <file>",
+			"Output file name (extension added automatically)",
+			"domain-check-results",
+		)
 		.option("--no-header", "Do not write CSV header (for appending)")
 		.option(
 			"--max-rows-print <n>",
@@ -362,6 +383,10 @@ export function makeCheckDomainsCommand(): Command {
 				});
 
 				const format = (opts.format || "csv").toLowerCase();
+				const outFile =
+					opts.out +
+					(format === "csv" ? ".csv" : format === "json" ? ".json" : ".yaml");
+
 				if (format === "json") {
 					const output = {
 						summary: results.reduce<Record<string, number>>((acc, r) => {
@@ -372,8 +397,8 @@ export function makeCheckDomainsCommand(): Command {
 						generatedAt: new Date().toISOString(),
 						total: results.length,
 					};
-					fs.writeFileSync(opts.out, JSON.stringify(output, null, 2), "utf8");
-					console.log(`Wrote ${results.length} results to ${opts.out}`);
+					fs.writeFileSync(outFile, JSON.stringify(output, null, 2), "utf8");
+					console.log(`Wrote ${results.length} results to ${outFile}`);
 				} else if (format === "yaml") {
 					const output = {
 						summary: results.reduce<Record<string, number>>((acc, r) => {
@@ -384,15 +409,15 @@ export function makeCheckDomainsCommand(): Command {
 						generatedAt: new Date().toISOString(),
 						total: results.length,
 					};
-					fs.writeFileSync(opts.out, yaml.dump(output), "utf8");
-					console.log(`Wrote ${results.length} results to ${opts.out}`);
+					fs.writeFileSync(outFile, yaml.dump(output), "utf8");
+					console.log(`Wrote ${results.length} results to ${outFile}`);
 				} else {
 					writeResultsCsv({
-						outFile: opts.out,
+						outFile,
 						results,
 						writeHeader: opts.header,
 					});
-					console.log(`Wrote ${results.length} rows to ${opts.out}`);
+					console.log(`Wrote ${results.length} rows to ${outFile}`);
 				}
 
 				const summary = results.reduce<Record<string, number>>((acc, r) => {

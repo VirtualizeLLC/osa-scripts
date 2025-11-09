@@ -1,10 +1,10 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
 import fs from "node:fs";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
+	inferAvailability,
 	readNamesFromInputs,
 	readTldsFromInputs,
 	readYamlConfig,
-	inferAvailability,
 	summarizeParsed,
 } from "../commands/domain-availability-checker/domain-availability-checker";
 
@@ -147,8 +147,12 @@ tlds:
 		});
 
 		it("should return likely-available for 'not found' phrases", () => {
-			expect(inferAvailability({}, "No match for domain")).toBe("likely-available");
-			expect(inferAvailability({}, "Domain not found")).toBe("likely-available");
+			expect(inferAvailability({}, "No match for domain")).toBe(
+				"likely-available",
+			);
+			expect(inferAvailability({}, "Domain not found")).toBe(
+				"likely-available",
+			);
 			expect(inferAvailability({}, "Available")).toBe("likely-available");
 		});
 
