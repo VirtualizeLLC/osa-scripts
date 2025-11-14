@@ -43,13 +43,3 @@ launch_emulator() {
   
   emulator -avd "$name" $EMULATOR_DEFAULT_ARGS
 }
-
-# Named aliases for quick access
-note9(){
-    emulator -avd Note9-API-${1:-33} $EMULATOR_DEFAULT_ARGS;
-}
-
-# Android Quick-Boot Aliases
-pixel5(){
-  emulator -avd pixel5 $EMULATOR_DEFAULT_ARGS
-}
