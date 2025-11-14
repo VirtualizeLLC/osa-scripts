@@ -48,14 +48,24 @@ interface YamlConfig {
 
 export function readYamlConfig(filePath: string): YamlConfig | null {
 	try {
-		let resolvedPath = filePath;
-		// Only try workspace root resolution for relative paths that look like they should be relative to workspace
-		if ((filePath.startsWith('./') || filePath.startsWith('../')) && !fs.existsSync(filePath)) {
-			const currentDir = dirname(fileURLToPath(import.meta.url));
-			const workspaceRoot = resolve(currentDir, '..', '..', '..');
-			resolvedPath = resolve(workspaceRoot, filePath);
+		// Prefer reading the path as-provided first. This ensures tests that spy on
+		// fs.readFileSync(filePath) will be exercised. If that fails, try a
+		// workspace-root-relative fallback for CLI invocations where paths are
+		// relative to the repo root.
+		let text: string;
+		try {
+			text = fs.readFileSync(filePath, "utf8");
+		} catch (err) {
+			// Only attempt workspace-root fallback for explicitly relative paths
+			if (filePath.startsWith("./") || filePath.startsWith("../")) {
+				const currentDir = dirname(fileURLToPath(import.meta.url));
+				const workspaceRoot = resolve(currentDir, "..", "..", "..");
+				const resolvedPath = resolve(workspaceRoot, filePath);
+				text = fs.readFileSync(resolvedPath, "utf8");
+			} else {
+				throw err;
+			}
 		}
-		const text = fs.readFileSync(resolvedPath, "utf8");
 		const config = yaml.load(text) as YamlConfig;
 		return config || null;
 	} catch {
@@ -85,14 +95,22 @@ export function readNamesFromInputs(
 				if (v) names.add(v);
 			}
 		} else {
-			// Fall back to plain text (one name per line)
-			let resolvedPath = filePath;
-			if ((filePath.startsWith('./') || filePath.startsWith('../')) && !fs.existsSync(filePath)) {
-				const currentDir = dirname(fileURLToPath(import.meta.url));
-				const workspaceRoot = resolve(currentDir, '..', '..', '..');
-				resolvedPath = resolve(workspaceRoot, filePath);
+			// Fall back to plain text (one name per line). Prefer reading the
+			// provided path first (so tests can mock readFileSync), and only if
+			// that fails attempt the workspace-root-relative fallback.
+			let text: string;
+			try {
+				text = fs.readFileSync(filePath, "utf8");
+			} catch (err) {
+				if (filePath.startsWith("./") || filePath.startsWith("../")) {
+					const currentDir = dirname(fileURLToPath(import.meta.url));
+					const workspaceRoot = resolve(currentDir, "..", "..", "..");
+					const resolvedPath = resolve(workspaceRoot, filePath);
+					text = fs.readFileSync(resolvedPath, "utf8");
+				} else {
+					throw err;
+				}
 			}
-			const text = fs.readFileSync(resolvedPath, "utf8");
 			for (const line of text.split(/\r?\n/)) {
 				const t = line.trim().toLowerCase();
 				if (t) names.add(t);
@@ -265,7 +283,12 @@ export async function runChecks(
 						);
 						parsed = p;
 						raw = r ?? "";
-						status = inferAvailability(parsed, raw);
+						// If parsed object is empty and we didn't receive any raw text, be conservative
+						if (parsed && Object.keys(parsed).length === 0 && !raw) {
+							status = "unknown";
+						} else {
+							status = inferAvailability(parsed, raw);
+						}
 					} catch (e: any) {
 						raw = String(e);
 						status = "error";

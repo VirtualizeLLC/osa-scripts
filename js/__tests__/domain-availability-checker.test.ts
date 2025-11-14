@@ -1,5 +1,19 @@
 import fs from "node:fs";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+
+// Mock only readFileSync. Use vitest's vi.mock to ensure the mock is in place
+// before the tested module is imported. Store the mock on globalThis so the
+// factory (which is hoisted) can create it and tests can still access it.
+vi.mock("node:fs", async () => {
+	const actual = await vi.importActual("node:fs");
+	// create and expose mock on globalThis for test access
+	(globalThis as any).__mockReadFileSync = vi.fn();
+	return {
+		...actual,
+		readFileSync: (globalThis as any).__mockReadFileSync,
+	};
+});
+
 import {
 	inferAvailability,
 	readNamesFromInputs,
@@ -8,9 +22,10 @@ import {
 	summarizeParsed,
 } from "../commands/domain-availability-checker/domain-availability-checker";
 
-// Mock only readFileSync
-const mockReadFileSync = vi.fn();
-vi.spyOn(fs, "readFileSync").mockImplementation(mockReadFileSync);
+// Grab the mock created by the vi.mock factory above so tests can configure it.
+const mockReadFileSync =
+	((globalThis as any).__mockReadFileSync as jest.Mock) ||
+	(globalThis as any).__mockReadFileSync;
 
 describe("Domain Availability Checker", () => {
 	beforeEach(() => {
